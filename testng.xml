@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test thread-count="5" name="Test">
+		<groups>
+			<define name="Inventory"></define>
+			<define name="Alarms"></define>
+			<define name="Events"></define>
+			<define name="all">
+				<include name="Inventory" />
+				<include name="Alarms" />
+				<include name="Events" />
+			</define>
+			<run>
+				<include name="all" />
+			</run>
+		</groups>
+		<classes>
+			<class
+				name="test.java.com.infinera.dnam.gui.inventory.InventoryTests" />
+			<class
+				name="test.java.com.infinera.dnam.gui.alarms.AlarmsTests" />
+			<class
+				name="test.java.com.infinera.dnam.gui.events.EventsTests" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

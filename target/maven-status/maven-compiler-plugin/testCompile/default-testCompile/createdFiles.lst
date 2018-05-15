@@ -1,0 +1,3 @@
+test\java\com\infinera\dnam\gui\inventory\InventoryTests.class
+test\java\com\infinera\dnam\gui\alarms\AlarmsTests.class
+test\java\com\infinera\dnam\gui\events\EventsTests.class

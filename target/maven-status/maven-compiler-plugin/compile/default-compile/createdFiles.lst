@@ -1,0 +1,9 @@
+main\java\SeleniumUtils.class
+test\java\com\infinera\dnam\gui\inventory\InventoryTests.class
+com\infinera\dnam\gui\pages\LoginPage.class
+com\infinera\dnam\gui\reports\CustomReporter.class
+com\infinera\dnam\gui\pages\MainPage.class
+main\java\CommonUtils.class
+test\java\com\infinera\dnam\gui\events\EventsTests.class
+test\java\com\infinera\dnam\gui\alarms\AlarmsTests.class
+com\infinera\dnam\gui\reports\CustomListener.class
