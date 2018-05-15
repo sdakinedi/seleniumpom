@@ -2,6 +2,7 @@ package com.infinera.dnam.gui.reports;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.testng.IInvokedMethod;
 import org.testng.ISuite;
@@ -59,6 +60,8 @@ public class CustomListener implements ISuiteListener, ITestListener, IInvokedMe
 	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
+		reports.startTest(result.getMethod().getMethodName());
+		
 		test.log(LogStatus.INFO, result.getMethod().getMethodName()+" Test Started....");
 	}
 
@@ -90,13 +93,9 @@ public class CustomListener implements ISuiteListener, ITestListener, IInvokedMe
 	@Override
 	public void onStart(ITestContext context) {
 
-		methodStartTime = context.getStartDate().toString();
-		String testName = context.getName();
-
-		String reportFileName = testName+"_"+
-				new SimpleDateFormat("yyyy-MM-dd hh-mm-ss-ms").format(new Date())+"_"+"reports.html";
-
-		reports = new ExtentReports(reportFileName);
+		test=reports.startTest(context.getName());
+		
+		test.log(LogStatus.INFO, "Test has started....");
 
 	}
 
@@ -104,7 +103,7 @@ public class CustomListener implements ISuiteListener, ITestListener, IInvokedMe
 	public void onFinish(ITestContext context) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-		test.log(LogStatus.INFO, "Test finished....");
+	//	test.log(LogStatus.INFO, "Test finished....");
 		reports.endTest(test);
 		reports.flush();
 	}
@@ -112,12 +111,24 @@ public class CustomListener implements ISuiteListener, ITestListener, IInvokedMe
 	@Override
 	public void onStart(ISuite suite) {
 		// TODO Auto-generated method stub
-		test.log(LogStatus.INFO, suite.getName()+" has Started....");
+		
+		String suiteName  = suite.getName();
+		Iterator<ITestNGMethod> iter = suite.getAllMethods().iterator();
+		
+
+		String reportFileName = suiteName+"_"+
+				new SimpleDateFormat("yyyy-MM-dd hh-mm-ss-ms").format(new Date())+"_"+"reports.html";
+
+		reports = new ExtentReports(reportFileName);
+		
+		
+		
+		
 	}
 
 	@Override
 	public void onFinish(ISuite suite) {
 		// TODO Auto-generated method stub
-		test.log(LogStatus.INFO, suite.getName()+" has Finished....");
+		//test.log(LogStatus.INFO, suite.getName()+" has Finished....");
 	}
 }
