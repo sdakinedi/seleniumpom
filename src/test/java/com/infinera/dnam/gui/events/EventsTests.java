@@ -12,24 +12,27 @@ import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 import org.sikuli.script.Screen;
 import org.testng.annotations.Ignore;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import main.java.CommonUtils;
 ;
 
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
 @Test(groups= {"Events"})
 
 public class EventsTests {
-	
-	
-	
+
+	CommonUtils utils = new CommonUtils();
+
 	@Test
 	public void test21_Verify_EventsReportingAndFilters_ForOCM8P_Network_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -47,31 +50,19 @@ public class EventsTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(10 * 1000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
+
 
 			log("Step 2. Verify is the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");	
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -92,13 +83,13 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
-			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			Thread.sleep(1 * 1000);
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
-			//		s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
+			//s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
 
 			log("Step 6. Verify filter functionality is proper with respect to OCM8P, Verify the date filters also works properly.");
 
@@ -125,23 +116,31 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 
 			s2.click(libDir+"Button_close.png");
-			
+
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
-		} finally {
 
-		}
+			utils.logout();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+
+			throw new AssertionError(e);
+		} 
 	}
-	
-	
+
+
 	@Test
 	public void test22_Verify_ExportOfEvents_ForOCM8P_Network_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
+
 
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -152,9 +151,6 @@ public class EventsTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
 
 
@@ -163,22 +159,9 @@ public class EventsTests {
 			//Region s2 = new Screen();
 
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(10 * 1000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -186,11 +169,8 @@ public class EventsTests {
 
 			App.focus("Infinera DNA-M Client");
 
-			// right click on Naveen subnetwork
-			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
-		
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -211,9 +191,9 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Perform export operation ");
 
@@ -248,18 +228,23 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
-		} finally {
+			utils.logout();
 
-		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+			throw new AssertionError(e);
+		} 
 	}
-	
-	
+
+
 	@Test
 	public void test15_Verify_EventsReportingAndFilters_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
-
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -270,30 +255,13 @@ public class EventsTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
-
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15 * 1000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -302,10 +270,10 @@ public class EventsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Event logy By Right Clicking on the node...");
@@ -323,13 +291,13 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
-			//		s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
+			//s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
 
 			log("Step 6. Verify filter functionality is proper with respect to OCM8P, Verify the date filters also works properly.");
 
@@ -356,23 +324,30 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 
 			s2.click(libDir+"Button_close.png");
-			
+
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
-		} finally {
 
-		}
+			utils.logout();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+
+			throw new AssertionError(e);
+		} 
 	}
-	
-	
+
+
 	@Test
 	public void test16_Verify_ExportOfEvents_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
 
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -383,9 +358,6 @@ public class EventsTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
 
 
@@ -393,25 +365,7 @@ public class EventsTests {
 
 			Region s2 = new Screen();
 
-			new CommonUtils().login();
-		
-			
-			/*App.focus("Login to the Server");
-
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15 * 1000);*/
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -421,15 +375,15 @@ public class EventsTests {
 
 			// right click on Naveen subnetwork
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
-		
+
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
-			log(" Go to the Node Inventory By Right Clicking on the node...");
+			log(" Go to the Event log By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
@@ -443,9 +397,9 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Perform export operation ");
 
@@ -465,7 +419,7 @@ public class EventsTests {
 			} catch(FindFailed ff) {
 				System.out.println("No Previous Entries of TSV file present. So Saving a new copy...");
 			}
-			
+
 
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"Close_Window_X.png");
@@ -480,21 +434,25 @@ public class EventsTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
-			new CommonUtils().logout();
 
-		} finally {
+			utils.logout();
 
-		}
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+
+			throw new AssertionError(e);
+		} 
 	}
-	
-	
+
+
 	@Test
 	public void test07_Verify_EventsReportingAndFilters_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
-
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -504,44 +462,28 @@ public class EventsTests {
 			String dir = System.getProperty("user.dir");
 
 			System.out.println(dir);
-
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
 
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(30 * 1000);
-
+			utils.login();
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
 			log("Step 2. Verify is the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 
-			// right click on Naveen subnetwork
-			s2.find(libDir+"nodeIp_172_18_9_251.png");
-			s2.click();
+			s2.type(libDir+"Find_String.png");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
+			s2.type(Keys.ENTER);
+			Thread.sleep(1 * 1000);
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
-			log(" Go to the Node Inventory By Right Clicking on the node...");
+			log(" Go to the Event Log By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
 			s2.type(Keys.RIGHT);
@@ -558,9 +500,9 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
@@ -591,9 +533,20 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 
 			s2.click(libDir+"Button_close.png");
-		} finally {
 
-		}
+			App.focus("Infinera DNA-M Client");
+			Thread.sleep(1 * 1000);
+			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+
+			utils.logout();
+
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+			
+			throw new AssertionError(e);
+		} 
 	}
 
 
@@ -601,9 +554,11 @@ public class EventsTests {
 	@Test
 	public void test08_Verify_ExportOfEvents_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
 
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -612,10 +567,8 @@ public class EventsTests {
 
 			String dir = System.getProperty("user.dir");
 
+
 			System.out.println(dir);
-
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
 
 			String libDir = dir + "\\lib\\";
 
@@ -624,23 +577,9 @@ public class EventsTests {
 
 			//Region s2 = new Screen();
 
-
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(10 * 1000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -650,20 +589,22 @@ public class EventsTests {
 
 			// right click on Naveen subnetwork
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
-		
+
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","10.210.130.170");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"nodeIp_10_210_130_170.png");
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
-			log(" Go to the Node Inventory By Right Clicking on the node...");
+			
+			log(" Go to the Event Log By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
 			s2.type(Keys.RIGHT);
 			Thread.sleep(1 * 1000);
 			// click on Alarm & Event log
+
 			s2.type(Keys.DOWN);
 			s2.type(Keys.ENTER);
 			Thread.sleep(2 * 1000);
@@ -675,9 +616,9 @@ public class EventsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Perform export operation ");
 
@@ -711,12 +652,15 @@ public class EventsTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+
+			utils.logout();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
 			
-			new CommonUtils().logout();
-
-		} finally {
-
-		}
+			throw new AssertionError(e);
+		} 
 	}
 
 

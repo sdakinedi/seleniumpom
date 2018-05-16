@@ -3,11 +3,13 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.infinera.dnam.gui.events.EventsTests">
+      <class name="test.java.com.infinera.dnam.gui.alarms.AlarmsTests">
         <methods>
-          <include name="test16_Verify_ExportOfEvents_ForOCM8P_Subnet_Context"/>
+          <include name="test13_Verify_AlarmsLogAndFilters_ForOCM8P_Subnet_Context"/>
+          <include name="test05_Verify_AlarmsLogAndFilters_ForOCM8P_NE_Context"/>
+          <include name="test19_Verify_AlarmsLogAndFilters_ForOCM8P_Network_Context"/>
         </methods>
-      </class> <!-- com.infinera.dnam.gui.events.EventsTests -->
+      </class> <!-- test.java.com.infinera.dnam.gui.alarms.AlarmsTests -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

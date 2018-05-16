@@ -13,20 +13,28 @@ import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 import org.sikuli.script.Screen;
 import org.testng.annotations.Ignore;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import main.java.CommonUtils;
 
 
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
 @Test(groups= {"Inventory"})
+
 public class InventoryTests {
 	
 	
-	
+	CommonUtils utils = new CommonUtils();
 	
 	@Test
-	public void test01_VerifyInventoryManagerAndFiltersForOCM8P_NE_Context() throws IOException, FindFailed {
+	public void test01_VerifyInventoryManagerAndFiltersForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
+		log("Name of the method executing is:" + 
+				Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.println("Name of the method executing is:" + 
+						Thread.currentThread().getStackTrace()[1].getMethodName());
+		
 		Screen s = new Screen();
 
 		try {
@@ -40,42 +48,24 @@ public class InventoryTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
-
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
+			utils.login();
 
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);
-
-			Pattern p = new Pattern(libDir + "HomePageTItle.png");
-
-			log("Step 2. Verify is the node is found....");
+			log("Step 2. Verify if the node is found....");
 
 			App.focus("Infinera DNA-M Client");
-
-			// right click on Naveen subnetwork
-			s2.find(libDir+"nodeIp_172_18_9_251.png");
-			s2.click();
+	
+			s2.find(libDir+"Find_String.png");	
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
+			Thread.sleep(1000);
+			s2.type(Keys.ENTER);
+			Thread.sleep(1 * 1000);
+			s2.find(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Node Inventory By Right Clicking on the node...");
@@ -89,7 +79,6 @@ public class InventoryTests {
 			Thread.sleep(2 * 1000);
 
 			App.focus("Node Inventory");
-
 		
 
 			log(" Step 3. Validate if the OCM8P board is present in the inventory list...");
@@ -133,7 +122,6 @@ public class InventoryTests {
 			s2.click(libDir+"Show_Details_checkbox.png");
 
 		
-
 			// disable again
 			s2.click(libDir+"Show_Details_checkbox.png");
 
@@ -166,7 +154,7 @@ public class InventoryTests {
 
 			s2.find(libDir+"RefreshButton.png");
 			s2.click();
-
+			
 
 			log(" Step 9. Verify OCM8P entry is intact after Refresh...");
 
@@ -174,17 +162,20 @@ public class InventoryTests {
 			s2.click(libDir + "OCM8P_description.png");
 
 			log("Close the window..");
-			s2.find(libDir+"Close_Window.png");
+			s2.click(libDir+"Close_Window.png");
 
-			s2.click();
-
-		} catch (FindFailed e) {
+			App.focus("Infinera DNA-M Client");
+			Thread.sleep(1 * 1000);
+			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+			
+			utils.logout();
+			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+			
+			throw new AssertionError(e);
+		} 
 
 
 	}
@@ -193,10 +184,15 @@ public class InventoryTests {
 	@Test
 	public void test02_VerifyInventoryManagerExportForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
+		
 		Screen s = new Screen();
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
+			System.out.println("Name of the method executing is:" + 
+							Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -214,24 +210,9 @@ public class InventoryTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -239,9 +220,11 @@ public class InventoryTests {
 
 			App.focus("Infinera DNA-M Client");
 
-			// right click on Naveen subnetwork
-			s2.find(libDir+"nodeIp_172_18_9_251.png");
-			s2.click();
+			s2.type(libDir+"Find_String.png");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
+			s2.type(Keys.ENTER);
+			Thread.sleep(1 * 1000);
+			s2.find(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Node Inventory By Right Clicking on the node...");
@@ -290,14 +273,17 @@ public class InventoryTests {
 
 			Thread.sleep(1 * 1000);
 
-			s2.find(libDir+"Util_Search_OCM8P_In_TSV.png");
-
+			s2.click(libDir+"Util_Search_OCM8P_In_TSV.png");
+			
 			App.focus("Infinera DNA-M Client");
+			Thread.sleep(1 * 1000);
+			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+			
+			utils.logout();
 
-		} finally {
-
+		} catch(Exception e) {
+			throw new AssertionError(e);
 		}
-
 
 	}
 	
@@ -311,7 +297,11 @@ public class InventoryTests {
 
 		try {
 
-
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
+			System.out.println("Name of the method executing is:" + 
+							Thread.currentThread().getStackTrace()[1].getMethodName());
+			
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
 
@@ -328,24 +318,9 @@ public class InventoryTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -360,7 +335,7 @@ public class InventoryTests {
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
 		
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -457,16 +432,16 @@ public class InventoryTests {
 			s2.click(libDir + "OCM8P_description.png");
 
 			log("Close the window..");
-			s2.find(libDir+"Close_Window.png");
+			s2.click(libDir+"Close_Window.png");
 
-			s2.click();
+			App.focus("Infinera DNA-M Client");
+			Thread.sleep(1 * 1000);
+			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+			
+			utils.logout();
 
-		} catch (FindFailed e) {
-			// TODO Auto-generated catch block
-			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
+		}  catch(Exception e) {
+			throw new AssertionError(e);
 		}
 
 
@@ -479,6 +454,11 @@ public class InventoryTests {
 		Screen s = new Screen();
 
 		try {
+			
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
+			System.out.println("Name of the method executing is:" + 
+							Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -497,24 +477,9 @@ public class InventoryTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -529,7 +494,7 @@ public class InventoryTests {
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
 		
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -597,12 +562,11 @@ public class InventoryTests {
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
-		} catch (FindFailed e) {
-			// TODO Auto-generated catch block
-			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
+			utils.logout();
+			
+			
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			throw new AssertionError(e);
 		}
 
 
@@ -617,6 +581,12 @@ public class InventoryTests {
 		try {
 
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
+			System.out.println("Name of the method executing is:" + 
+							Thread.currentThread().getStackTrace()[1].getMethodName());
+			
+			
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
 
@@ -633,22 +603,9 @@ public class InventoryTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(10 * 1000);
+			utils.login();
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -663,10 +620,10 @@ public class InventoryTests {
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
 		
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Node Inventory By Right Clicking on the node...");
@@ -759,18 +716,16 @@ public class InventoryTests {
 			s2.click(libDir + "OCM8P_description.png");
 
 			log("Close the window..");
-			s2.find(libDir+"Close_Window.png");
-
+			s2.click(libDir+"Close_Window.png");
+			
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
-		} catch (FindFailed e) {
-			// TODO Auto-generated catch block
-			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			utils.logout();
+
+		}  catch(Exception e) {
+			throw new AssertionError(e);
 		}
 
 
@@ -784,6 +739,10 @@ public class InventoryTests {
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
+			System.out.println("Name of the method executing is:" + 
+							Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -801,40 +760,20 @@ public class InventoryTests {
 
 			log("Step 1. Login to the DNAM Client..");
 
-			App.focus("Login to the Server");
-
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15 * 1000);
-
-			Pattern p = new Pattern(libDir + "HomePageTItle.png");
-
-			log("Step 2. Verify is the node is found....");
-
-			App.focus("Infinera DNA-M Client");
-
-			log("Step 2. Verify is the node is found....");
+			utils.login();
+			log("Step 2. Verify if the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 
 			//	s2.find(libDir+"nodeIp_10_210_130_170.png");
 		
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Node Inventory By Right Clicking on the node...");
@@ -898,11 +837,11 @@ public class InventoryTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
-			new CommonUtils().logout();
 
-		} finally {
+			utils.logout();
 			
+		} catch(Exception e) {
+			throw new AssertionError(e);
 		}
 
 

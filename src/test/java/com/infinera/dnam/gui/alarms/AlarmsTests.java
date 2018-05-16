@@ -11,26 +11,29 @@ import org.sikuli.script.FindFailed;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 import org.sikuli.script.Screen;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import main.java.CommonUtils;
 
 
-
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
 @Test(groups= {"Alarms"})
 
 public class AlarmsTests {
 
 	CommonUtils utils = new CommonUtils();
-	
-	
+
+
 	@Test
 	public void test03_VerifyAlarmReportingAndFiltersForOCM8P_NE_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -52,23 +55,8 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
-						
-			/*s2.type("admin");
-			s2.type(Keys.TAB);
 
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);*/
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -77,13 +65,13 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","10.210.130.170");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"nodeIp_10_210_130_170.png");
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
-			log(" Go to the Node Inventory By Right Clicking on the node...");
+			log(" Go to the Active Alarms By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			// click on Active Alarms
 			s2.type(Keys.ENTER);
@@ -107,8 +95,6 @@ public class AlarmsTests {
 			Region s3 = s2.getLastMatch();
 
 			System.out.println("new text is: " + s2.text());
-
-			//assertTrue(s2.text().contains("Optical Channer Monitor"));
 
 			// Verify upon disabling the board checkbox, the ocm8P goes missing from table
 
@@ -148,30 +134,39 @@ public class AlarmsTests {
 			s2.click(libDir+"Star.png");
 
 			s2.click(libDir+"CloseDotDotDot_Button.png");
+			Thread.sleep(1000);
 			s2.click(libDir+"Close_Window_X.png");
 
-			utils.logout();
-			
+			log("Close the window..");
+			s2.click(libDir+"Close_Window.png");
 
-		} catch (FindFailed e) {
+
+			App.focus("Infinera DNA-M Client");
+			Thread.sleep(1 * 1000);
+			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
+
+			utils.logout();
+
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+
+			throw new AssertionError(e);
+		} 
 
 
 	}
 
 
-	
+
 	@Test
 	public void test04_VerifyExportOfAlarmReportingForOCM8P_NE_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
-
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -192,28 +187,8 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
-		/*	App.focus("Login to the Server");
 
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);*/
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -222,13 +197,13 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","10.210.130.170");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"nodeIp_10_210_130_170.png");
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
-			log(" Go to the Node Inventory By Right Clicking on the node...");
+			log(" Go to the Active Alarms By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			// click on Active Alarms
 			s2.type(Keys.ENTER);
@@ -279,26 +254,25 @@ public class AlarmsTests {
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
 			utils.logout();
-			
-			
-		} catch (FindFailed e) {
+
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
 
+			throw new AssertionError(e);
+		} 
 	}	
 
 
-	
+
 	@Test
 	public void test06_VerifyExportOfAlarmLogForOCM8P_NE_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
-
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -319,30 +293,8 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
-		
-			/*App.focus("Login to the Server");
 
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(5000);
-
-			Thread.sleep(3000);
-*/
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
 			log("Step 2. Verify is the node is found....");
@@ -350,10 +302,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","10.210.130.170");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"nodeIp_10_210_130_170.png");
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Active Alarms By Right Clicking on the node...");
@@ -371,8 +323,8 @@ public class AlarmsTests {
 			s2.click(libDir+"Maximize_Window_X.png");
 			Thread.sleep(1 * 1000);
 
-			//	s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
-			//	s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 
 			log("Step 4. Perform export operation ");
 
@@ -407,20 +359,19 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
+
 			utils.logout();
 
-		} catch (FindFailed e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+
+			throw new AssertionError(e);
+		} 
 
 	}	
 
-	
+
 	@Test
 	public void test19_Verify_AlarmsLogAndFilters_ForOCM8P_Network_Context() throws IOException, FindFailed, InterruptedException {
 
@@ -428,6 +379,8 @@ public class AlarmsTests {
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -437,36 +390,15 @@ public class AlarmsTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
 
 
 			log("Step 1. Login to the DNAM Client..");
 
-			
-			Region s2 = new Screen();
 
-			Thread.sleep(2000);
+			Region s2 = new Screen();
 
 			utils.login();
-			
-			/*App.focus("Login to the Server");
-
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(7 * 1000);*/
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -475,7 +407,7 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -497,13 +429,13 @@ public class AlarmsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the alalrm in the alarm log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
+			//s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
 			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			//s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
-			//		s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
+			//s2.hover(libDir+"Event_Filters_Node_Unit_User.png");
 
 			log("Step 6. Verify filter functionality is proper with respect to OCM8P, Verify the date filters also works properly.");
 
@@ -537,18 +469,24 @@ public class AlarmsTests {
 
 			utils.logout();
 
-		} finally {
-		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+
+			throw new AssertionError(e);
+		} 
 	}
 
 
-	
+
 	@Test
 	public void test20_VerifyExportOfAlarmLogForOCM8P_Network_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
 
 		try {
+
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 
 			Settings.OcrTextSearch = true;
@@ -558,10 +496,6 @@ public class AlarmsTests {
 			String dir = System.getProperty("user.dir");
 
 			System.out.println(dir);
-
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
 
 
@@ -569,28 +503,7 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
-//			App.focus("Login to the Server");
-//
-//			Region s2 = new Screen();
-//
-//			Thread.sleep(2000);
-//
-//			s2.type("admin");
-//			s2.type(Keys.TAB);
-//
-//			s2.type("admin");
-//			s2.type(Keys.TAB);
-//
-//
-//			s2.type(Keys.ENTER);
-//
-//			Thread.sleep(5000);
-//
-//			Thread.sleep(3000);
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -599,7 +512,7 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","Network");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Network");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
 			s2.click(libDir+"NetworkDomain.png");
@@ -620,8 +533,8 @@ public class AlarmsTests {
 			s2.click(libDir+"Maximize_Window_X.png");
 			Thread.sleep(1 * 1000);
 
-			//	s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
-			//	s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 
 			log("Step 4. Perform export operation ");
 
@@ -656,28 +569,27 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
+
 			utils.logout();
 
-		} catch (FindFailed e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+			
+			throw new AssertionError(e);
+		} 
 
 	}	
 
 
-	
+
 	@Test
 	public void test05_Verify_AlarmsLogAndFilters_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
-
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -697,28 +609,8 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
-			
-			/*App.focus("Login to the Server");
 
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(10 * 1000);
-*/
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
 			log("Step 2. Verify is the node is found....");
@@ -726,10 +618,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","10.210.130.170");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"10.210.130.171");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"nodeIp_10_210_130_170.png");
+			s2.click(libDir+"nodeIp_10_210_130_171_Name.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Active Alarms By Right Clicking on the node...");
@@ -748,9 +640,8 @@ public class AlarmsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the alalrm in the alarm log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//		s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
-			Thread.sleep(2 * 1000);
-			//		s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
@@ -788,12 +679,15 @@ public class AlarmsTests {
 
 			utils.logout();
 
-		} finally {
-
-		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
+			
+			throw new AssertionError(e);
+		} 
 	}
 
-	
+
 	@Test
 	public void test11_VerifyActiveAlarmReportingAndFiltersForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
@@ -801,6 +695,8 @@ public class AlarmsTests {
 
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -823,23 +719,7 @@ public class AlarmsTests {
 			Thread.sleep(2000);
 
 			utils.login();
-			
-			/*App.focus("Login to the Server");
 
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15 * 1000);*/
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -848,10 +728,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Active Alarms By Right Clicking on the node...");
@@ -927,24 +807,23 @@ public class AlarmsTests {
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
 			utils.logout();
-			
-		} catch (FindFailed e) {
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+			
+			throw new AssertionError(e);
+		} 
 	}
 
-	
+
 	@Test
 	public void test12_VerifyExportOfAlarmLogForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
-
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -954,36 +833,14 @@ public class AlarmsTests {
 
 			System.out.println(dir);
 
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
-
 			String libDir = dir + "\\lib\\";
-
 
 			log("Step 1. Login to the DNAM Client..");
 
 			Region s2 = new Screen();
 			Thread.sleep(2000);
 			utils.login();
-			
-			
-			/*App.focus("Login to the Server");
 
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15000);
-*/
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
 			log("Step 2. Verify is the node is found....");
@@ -991,10 +848,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Active Alarms By Right Clicking on the node...");
@@ -1048,26 +905,25 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 			Thread.sleep(1 * 1000);
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
-			
+
 			utils.logout();
 
-		} catch (FindFailed e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+			throw new AssertionError(e);
+		} 
 
 	}	
+
 
 	@Test
 	public void test13_Verify_AlarmsLogAndFilters_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
-		Screen s = new Screen();
-
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -1084,26 +940,9 @@ public class AlarmsTests {
 
 
 			log("Step 1. Login to the DNAM Client..");
-			
+
 			Region s2 = new Screen();
-			Thread.sleep(2000);
 			utils.login();
-
-			/*App.focus("Login to the Server");
-
-			Region s2 = new Screen();
-
-			Thread.sleep(2000);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type("admin");
-			s2.type(Keys.TAB);
-
-			s2.type(Keys.ENTER);
-
-			Thread.sleep(15 * 1000);*/
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
@@ -1112,10 +951,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png",Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Alarm Log By Right Clicking on the node...");
@@ -1134,9 +973,8 @@ public class AlarmsTests {
 			Thread.sleep(1 * 1000);
 			log("click on the alalrm in the alarm log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
-			//	s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
-			Thread.sleep(2 * 1000);
-			//	s2.click(libDir+"Event_ocm_1_11_2_AdminState_Service.png");
+			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 
 			log("Step 5. Verify below filters are available.\n" + 
 					"     Node , Unit , Event,  User");
@@ -1173,9 +1011,13 @@ public class AlarmsTests {
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
 			utils.logout();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Find failed at: " + e.getMessage());
 			
-		} finally {
-		}
+			throw new AssertionError(e);
+		} 
 	}
 
 
@@ -1183,10 +1025,10 @@ public class AlarmsTests {
 	@Test
 	public void test14_VerifyExportOfAlarmLogForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
-		Screen s = new Screen();
-
 		try {
 
+			log("Name of the method executing is:" + 
+					Thread.currentThread().getStackTrace()[1].getMethodName());
 
 			Settings.OcrTextSearch = true;
 			Settings.OcrTextRead = true;
@@ -1203,10 +1045,8 @@ public class AlarmsTests {
 
 			Region s2 = new Screen();
 
-			Thread.sleep(2000);
-
 			utils.login();
-			
+
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
 			log("Step 2. Verify is the node is found....");
@@ -1214,10 +1054,10 @@ public class AlarmsTests {
 			App.focus("Infinera DNA-M Client");
 
 			s2.type(libDir+"Find_String.png");
-			s2.type(libDir+"Find_DropDown.png","sawan");
+			s2.type(libDir+"Find_DropDown.png", Keys.ENTER+"Subnet1");
 			s2.type(Keys.ENTER);
 			Thread.sleep(1 * 1000);
-			s2.click(libDir+"Subnet1_sawan.png");
+			s2.click(libDir+"Subnet1.png");
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Alarm Log By Right Clicking on the node...");
@@ -1235,8 +1075,8 @@ public class AlarmsTests {
 			s2.click(libDir+"Maximize_Window_X.png");
 			Thread.sleep(1 * 1000);
 
-			//	s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
-			//	s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
+			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 
 			log("Step 4. Perform export operation ");
 
@@ -1273,15 +1113,14 @@ public class AlarmsTests {
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
 			utils.logout();
-			
-			
-		} catch (FindFailed e) {
+
+
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			e.printStackTrace();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+			
+			throw new AssertionError(e);
+		} 
 
 	}
 
