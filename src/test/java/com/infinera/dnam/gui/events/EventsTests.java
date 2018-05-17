@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 import main.java.CommonUtils;
 ;
 
-@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class, com.infinera.dnam.gui.reports.CustomListener2.class})
 @Test(groups= {"Events"})
 
 public class EventsTests {
@@ -41,9 +41,6 @@ public class EventsTests {
 			String dir = System.getProperty("user.dir");
 
 			System.out.println(dir);
-
-			//	App.open("javaws C:\\Users\\sdakinedi\\Downloads\\jnlp_7.jnlp");
-
 
 			String libDir = dir + "\\lib\\";
 
@@ -80,7 +77,7 @@ public class EventsTests {
 			App.focus("Event Log");
 			// maximize the event log window..
 			s2.click(libDir+"Maximize_Window_X.png");
-			Thread.sleep(1 * 1000);
+			Thread.sleep(3 * 1000);
 			log("click on the event in the event log that got populated..");
 			log("Step 4. Verify Node name , Unit , Domain , Event,  Category, User , Time coulmns are updated properly");
 			s2.click(libDir+"Event_ocm_1_11_1_AdminState_Up.png");
@@ -132,7 +129,7 @@ public class EventsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test22_Verify_ExportOfEvents_ForOCM8P_Network_Context() throws IOException, FindFailed, InterruptedException {
 
 
@@ -238,7 +235,7 @@ public class EventsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test15_Verify_EventsReportingAndFilters_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
 		try {
@@ -340,7 +337,7 @@ public class EventsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test16_Verify_ExportOfEvents_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
 
@@ -446,7 +443,7 @@ public class EventsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test07_Verify_EventsReportingAndFilters_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
 		try {
@@ -551,7 +548,7 @@ public class EventsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test08_Verify_ExportOfEvents_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
 

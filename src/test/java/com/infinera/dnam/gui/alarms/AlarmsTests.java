@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 import main.java.CommonUtils;
 
 
-@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class, com.infinera.dnam.gui.reports.CustomListener2.class})
 @Test(groups= {"Alarms"})
 
 public class AlarmsTests {
@@ -26,7 +26,7 @@ public class AlarmsTests {
 	CommonUtils utils = new CommonUtils();
 
 
-	@Test
+	@Test(enabled=false)
 	public void test03_VerifyAlarmReportingAndFiltersForOCM8P_NE_Context() throws IOException, FindFailed {
 
 
@@ -82,7 +82,7 @@ public class AlarmsTests {
 			App.focus("Active Alarms");
 			// maximize the event log window..
 			s2.click(libDir+"Maximize_Window_X.png");
-			Thread.sleep(1 * 1000);
+			Thread.sleep(2 * 1000);
 
 			s2.find(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
 			s2.click(libDir + "Alarm_ocm_1_11_1_AdminState_Service.png");
@@ -160,7 +160,7 @@ public class AlarmsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test04_VerifyExportOfAlarmReportingForOCM8P_NE_Context() throws IOException, FindFailed {
 
 		try {
@@ -266,7 +266,7 @@ public class AlarmsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test06_VerifyExportOfAlarmLogForOCM8P_NE_Context() throws IOException, FindFailed {
 
 		try {
@@ -479,7 +479,7 @@ public class AlarmsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test20_VerifyExportOfAlarmLogForOCM8P_Network_Context() throws IOException, FindFailed {
 
 
@@ -583,7 +583,7 @@ public class AlarmsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test05_Verify_AlarmsLogAndFilters_ForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
 		try {
@@ -688,7 +688,7 @@ public class AlarmsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test11_VerifyActiveAlarmReportingAndFiltersForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
 		Screen s = new Screen();
@@ -817,7 +817,7 @@ public class AlarmsTests {
 	}
 
 
-	@Test
+	@Test(enabled=false)
 	public void test12_VerifyExportOfAlarmLogForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
 		try {
@@ -917,7 +917,7 @@ public class AlarmsTests {
 	}	
 
 
-	@Test
+	@Test(enabled=false)
 	public void test13_Verify_AlarmsLogAndFilters_ForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
 		try {
@@ -1022,7 +1022,7 @@ public class AlarmsTests {
 
 
 
-	@Test
+	@Test(enabled=false)
 	public void test14_VerifyExportOfAlarmLogForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
 		try {

@@ -5,6 +5,7 @@ import static org.testng.Reporter.*;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.sikuli.basics.Settings;
 import org.sikuli.hotkey.Keys;
 import org.sikuli.script.App;
@@ -16,18 +17,25 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.infinera.dnam.gui.reports.CustomListener;
+import com.infinera.dnam.gui.reports.CustomListener2;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+
 import main.java.CommonUtils;
 
 
-@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class})
-@Test(groups= {"Inventory"})
+@Listeners({ com.infinera.dnam.gui.reports.CustomListener.class, com.infinera.dnam.gui.reports.CustomListener2.class})
 
-public class InventoryTests {
-	
+@Test(groups= {"Inventory"})	
+
+
+public class InventoryTests extends CustomListener2 {
 	
 	CommonUtils utils = new CommonUtils();
 	
-	@Test
+	@Test(description=" Verify the Inventory Manager and Filters for OCM8P from NE Context..")
 	public void test01_VerifyInventoryManagerAndFiltersForOCM8P_NE_Context() throws IOException, FindFailed, InterruptedException {
 
 		log("Name of the method executing is:" + 
@@ -51,12 +59,14 @@ public class InventoryTests {
 			String libDir = dir + "\\lib\\";
 
 			log("Step 1. Login to the DNAM Client..");
-
+			test.log(LogStatus.INFO, "Step 1. Login to the DNAM Client..");
+				
 			Region s2 = new Screen();
 
 			utils.login();
 
 			log("Step 2. Verify if the node is found....");
+			test.log(LogStatus.INFO, "Step 2. Verify if the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 	
@@ -69,6 +79,7 @@ public class InventoryTests {
 			s2.rightClick();
 			s2.hover();
 			log(" Go to the Node Inventory By Right Clicking on the node...");
+			test.log(LogStatus.INFO, "Go to the Node Inventory By Right Clicking on the node...");
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
 			s2.type(Keys.DOWN);
@@ -79,18 +90,13 @@ public class InventoryTests {
 			Thread.sleep(2 * 1000);
 
 			App.focus("Node Inventory");
-		
 
 			log(" Step 3. Validate if the OCM8P board is present in the inventory list...");
+			test.log(LogStatus.INFO, "Step 3. Validate if the OCM8P board is present in the inventory list...");
 
 			s2.find(libDir + "OCM8P_description.png");
 
 			s2.click(libDir + "OCM8P_description.png");
-
-
-			// 	get the text of the Region
-
-			Region s3 = s2.getLastMatch();
 
 			System.out.println("new text is: " + s2.text());
 
@@ -99,49 +105,58 @@ public class InventoryTests {
 			// Verify upon disabling the board checkbox, the ocm8P goes missing from table
 
 			log(" Step 4. Disable the Boards Checkbox to see OCM8P is missing ...");
+			test.log(LogStatus.INFO, "Step 4. Disable the Boards Checkbox to see OCM8P is missing ...");
+			
 			s2.find(libDir+"Boards_checkbox_Node_Inventory.png");
 
 			s2.click(); // this will uncheck the Boards button
 
 			// verify if the OCMP8P is gone missing..
-
+			
 			try {
 				s2.find(libDir + "OCM8P_description.png");
 				assertNull(s2.find(s2.find(libDir + "OCM8P_description.png")));
 			} catch(FindFailed ff) {
 				log("Board OCM8P Successfully went missing from the table...");
+				test.log(LogStatus.INFO, "Verified that Board OCM8P Successfully went missing from the table...");
 			}
 
 			// enable again
 			log(" Step 5. Enable the Boards Checkbox to see OCM8P is visible again ...");
+			test.log(LogStatus.INFO, "Step 5. Enable the Boards Checkbox to see OCM8P is visible again ...");
 			s2.click(libDir+"Boards_checkbox_Node_Inventory.png");
 
 			Thread.sleep(1 * 1000);
 
 			log(" Step 5.a. Enable the Show details Checkbox to see OCM8P is visible again ...");
+			test.log(LogStatus.INFO, "Step 5.a. Enable the Show details Checkbox to see OCM8P is visible again ...");
 			s2.click(libDir+"Show_Details_checkbox.png");
 
-		
 			// disable again
 			s2.click(libDir+"Show_Details_checkbox.png");
 
 
 			log(" Step 6. Verify the buttons hide, find, previous and next are available...");
+			test.log(LogStatus.INFO, "Step 6. Verify the buttons hide, find, previous and next are available...");
 			s2.find(libDir+"Buttons_hide_find_previous_next.png");
 
 			log(" Step 6.1. Verify the buttons export, close, refresh are available...");
+			test.log(LogStatus.INFO, "Step 6.1. Verify the buttons export, close, refresh are available...");
 			s2.find(libDir+"Buttons_refresh_export_close_find.png");
 
 			// find columns
 			log(" Step 7. Verify all the columns are present in the inventory table...");
+			test.log(LogStatus.INFO, "Step 7. Verify all the columns are present in the inventory table...");
 			s2.find(libDir+"Columns_All_Node_Inventory_table.png");
 
 			// Sort the columns using description column and check if they are sorted...
 
 			log(" Step 8. Sort the columns based on one column name.. description..");
+			test.log(LogStatus.INFO, "Step 8. Sort the columns based on one column name.. description..");
 			s2.click(libDir+"Columns_Description.png");
 
-			log(" Step 8.1. Verify OCM8P is still seen after sorting...");
+			log(" Step 8.1. Verify OCM8P is Intact after sorting...");
+			test.log(LogStatus.INFO, "Step 8.1. Verify OCM8P is Intact after sorting...");
 			s2.find(libDir + "OCM8P_description.png");
 
 			s2.click(libDir + "OCM8P_description.png");
@@ -151,12 +166,12 @@ public class InventoryTests {
 			s2.type(libDir+"Find_Inventory.png", "OCM8P");
 			s2.type(Keys.ENTER);
 
-
 			s2.find(libDir+"RefreshButton.png");
 			s2.click();
 			
 
 			log(" Step 9. Verify OCM8P entry is intact after Refresh...");
+			test.log(LogStatus.INFO, "Step 9. Verify OCM8P entry is intact after Refresh...");
 
 			s2.find(libDir + "OCM8P_description.png");
 			s2.click(libDir + "OCM8P_description.png");
@@ -170,13 +185,12 @@ public class InventoryTests {
 			
 			utils.logout();
 			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Find failed at: " + e.getMessage());
-			
 			throw new AssertionError(e);
 		} 
-
 
 	}
 
@@ -216,7 +230,7 @@ public class InventoryTests {
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
-			log("Step 2. Verify is the node is found....");
+			log("Step 2. Verify if the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 
@@ -290,7 +304,7 @@ public class InventoryTests {
 	
 	
 	
-	@Test
+	@Test(enabled=false)
 	public void test17_VerifyInventoryManagerAndFiltersForOCM8P_Network_Context() throws IOException, FindFailed {
 
 		Screen s = new Screen();
@@ -324,11 +338,7 @@ public class InventoryTests {
 
 			Pattern p = new Pattern(libDir + "HomePageTItle.png");
 
-			log("Step 2. Verify is the node is found....");
-
-			App.focus("Infinera DNA-M Client");
-
-			log("Step 2. Verify is the node is found....");
+			log("Step 2. Verify if the node is found....");
 
 			App.focus("Infinera DNA-M Client");
 
@@ -448,7 +458,7 @@ public class InventoryTests {
 	}
 	
 	
-	@Test
+	@Test(enabled=false)
 	public void test18_VerifyInventoryManagerExportForOCM8P_Network_Context() throws IOException, FindFailed {
 
 		Screen s = new Screen();
@@ -573,7 +583,7 @@ public class InventoryTests {
 	}
 	
 	
-	@Test
+	@Test(enabled=false)
 	public void test09_VerifyInventoryManagerAndFiltersForOCM8P_Subnet_Context() throws IOException, FindFailed {
 
 		Screen s = new Screen();
@@ -709,7 +719,6 @@ public class InventoryTests {
 			s2.find(libDir+"RefreshButton.png");
 			s2.click();
 
-
 			log(" Step 9. Verify OCM8P entry is intact after Refresh...");
 
 			s2.find(libDir + "OCM8P_description.png");
@@ -731,8 +740,7 @@ public class InventoryTests {
 
 	}
 	
-	
-	@Test
+	@Test(enabled=false)
 	public void test10_VerifyInventoryManagerExportForOCM8P_Subnet_Context() throws IOException, FindFailed, InterruptedException {
 
 		Screen s = new Screen();
@@ -839,6 +847,7 @@ public class InventoryTests {
 			s2.type(libDir+"Find_DropDown.png", Keys.BACKSPACE);
 
 			utils.logout();
+				
 			
 		} catch(Exception e) {
 			throw new AssertionError(e);

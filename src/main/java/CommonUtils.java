@@ -69,12 +69,12 @@ public class CommonUtils {
 
 		try {
 			
-			Thread.sleep(2 * 1000);
+			Thread.sleep(1 * 1000);
 			
 			try {
 				s2.find(libDir+"loginWindow_Title.png");
 			} catch (FindFailed ff) {
-				Thread.sleep(3 * 1000);
+				Thread.sleep(2 * 1000);
 				s2.click(libDir+"FileMenu.png");
 				s2.type(Keys.DOWN);
 				s2.type(Keys.ENTER);
@@ -98,7 +98,7 @@ public class CommonUtils {
 
 			s2.type(Keys.ENTER);
 
-			Thread.sleep(10 * 1000);
+			Thread.sleep(15 * 1000);
 
 		} catch (Exception e) {
 			/*s2.click(libDir+"FileMenu.png");

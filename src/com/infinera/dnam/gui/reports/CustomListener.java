@@ -19,8 +19,8 @@ import com.relevantcodes.extentreports.LogStatus;
 public class CustomListener implements ISuiteListener, ITestListener, IInvokedMethod {
 
 
-	static ExtentReports reports;
-	static ExtentTest test;
+	public static ExtentReports reports;
+	public static ExtentTest test;
 	String methodStartTime;
 	String methodEndTime;
 	String methodName;
